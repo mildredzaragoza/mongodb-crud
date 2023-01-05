@@ -24,4 +24,14 @@ public class StudentService {
 	public Student saveStudent(Student student) {
 		return studentRepository.save(student);
 	}
+	
+	public Boolean deleteStudent(int studentId) {
+		try {
+			studentRepository.deleteById(studentId);
+			return true;
+		}catch(Exception exception) {
+			return false;
+		}
+		
+	}
 }
