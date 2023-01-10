@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +37,7 @@ public class StudentController {
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getStudent(@PathVariable("id") Integer studentId){
 		try {
-			return new ResponseEntity<Student>(studentService.getStudentById(studentId), HttpStatus.OK);
+			return new ResponseEntity<Student>(studentService.getStudentById(studentId).get(), HttpStatus.OK);
 		}catch(Exception exception) {
 			return new ResponseEntity<String>(exception.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -59,4 +60,14 @@ public class StudentController {
 			return new ResponseEntity<String>(exception.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@PutMapping
+	public ResponseEntity<?> updateStudent(@RequestBody Student student){
+		try {
+			return new ResponseEntity<Student>(studentService.saveStudent(student), HttpStatus.CREATED);
+		}catch(Exception exception) {
+			return new ResponseEntity<String>(exception.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 }
