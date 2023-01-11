@@ -1,10 +1,10 @@
 package com.aspire.mongodbdemocrud.controller;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,9 +35,11 @@ public class StudentController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getStudent(@PathVariable("id") Integer studentId){
+	public ResponseEntity<?> getStudentById(@PathVariable("id") Integer studentId){
 		try {
 			return new ResponseEntity<Student>(studentService.getStudentById(studentId).get(), HttpStatus.OK);
+		}catch(NoSuchElementException exception) {
+			return new ResponseEntity<String>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}catch(Exception exception) {
 			return new ResponseEntity<String>(exception.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -54,10 +56,10 @@ public class StudentController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteStudent(@PathVariable("id") Integer idStudent){
-		try {
-			return new ResponseEntity<Boolean>(studentService.deleteStudent(idStudent), HttpStatus.OK);
-		}catch(Exception exception) {
-			return new ResponseEntity<String>(exception.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+		if(studentService.deleteStudent(idStudent)) {
+	       	return new ResponseEntity<Boolean>(studentService.deleteStudent(idStudent), HttpStatus.OK);
+		}else{
+			return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
 		}
 	}
 	
@@ -68,6 +70,5 @@ public class StudentController {
 		}catch(Exception exception) {
 			return new ResponseEntity<String>(exception.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	}
-	
+	}	
 }

@@ -1,6 +1,7 @@
 package com.aspire.mongodbdemocrud.service;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,22 @@ public class StudentService {
 		return (ArrayList<Student>) studentRepository.findAll();
 	}
 	
-	public Optional<Student> getStudentById(int studentId) {
-		return studentRepository.findById(studentId);
+	public Optional<Student> getStudentById(int studentId) throws Exception{
+		try {
+			return studentRepository.findById(studentId);
+	    }catch(NoSuchElementException exception) {
+	    	 throw new NoSuchElementException("Student with ID: " + studentId + " doesn't exist.");
+	    }catch(Exception exception) {
+	    	 throw new Exception("Something went wrong, try again.");
+	    }
 	}
 	
-	public Student saveStudent(Student student) {
-		return studentRepository.save(student);
+	public Student saveStudent(Student student) throws Exception {
+		try {
+			return studentRepository.save(student);
+		}catch (Exception exception) {
+    		throw new Exception("Something went wrong, try again.");	
+    	}
 	}
 	
 	public Boolean deleteStudent(int studentId) {
