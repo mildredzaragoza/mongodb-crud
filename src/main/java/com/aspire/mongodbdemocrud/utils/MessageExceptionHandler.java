@@ -1,6 +1,7 @@
 package com.aspire.mongodbdemocrud.utils;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -25,8 +26,8 @@ public class MessageExceptionHandler {
 	 */
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public HashMap<String, String> handleValidateExceptions(MethodArgumentNotValidException exception) {
-		HashMap<String, String> errors = new HashMap<String, String>();
+	public Map<String, String> handleValidateExceptions(MethodArgumentNotValidException exception) {
+		Map<String, String> errors = new HashMap<String, String>();
 		exception.getBindingResult().getAllErrors().forEach((error) -> {
 			String fieldName = ((FieldError) error).getField();
 			String message = error.getDefaultMessage();

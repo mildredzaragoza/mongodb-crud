@@ -7,8 +7,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.aspire.mongodbdemocrud.exceptions.InvalidDateException;
 import com.aspire.mongodbdemocrud.model.Student;
 import com.aspire.mongodbdemocrud.repository.StudentRepository;
+import com.aspire.mongodbdemocrud.utils.DateValidator;
 
 /**
  * Class to implement methods available on StudentRepository such as 
@@ -21,6 +23,9 @@ public class StudentService {
 	
 	@Autowired
 	private StudentRepository studentRepository;
+	
+	@Autowired
+	private DateValidator dateValidator;
 	
 	/**
 	 * This method returns all students
@@ -69,9 +74,15 @@ public class StudentService {
 	 * This method saves a new student in the current collection
 	 * @param student must not be null 
 	 * @return the student saved
+	 * @throws InvalidDateException when an invalid date was introduced
 	 */
-	public Student saveStudent(Student student){
-		return studentRepository.insert(student);
+	public Student saveStudent(Student student) throws InvalidDateException{
+		try {
+			dateValidator.validateDate(student.getDateOfJoin());
+			return studentRepository.insert(student);
+		} catch (InvalidDateException exception) {
+			throw new InvalidDateException(exception.getMessage());
+		}
 	}
 	
 }

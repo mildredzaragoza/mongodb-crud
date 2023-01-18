@@ -1,5 +1,7 @@
 package com.aspire.mongodbdemocrud;
 
+import java.util.Date;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -16,6 +18,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MongodbDemoCrudApplication {
 	
 	public static void main(String[] args) {
+		    	Date newDate = new Date("22-JAN-2022");
+		    	System.out.println("The date is " + newDate);
+		    
 		SpringApplication.run(MongodbDemoCrudApplication.class, args);
 	}
 

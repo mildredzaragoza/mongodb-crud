@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aspire.mongodbdemocrud.exceptions.InvalidDateException;
 import com.aspire.mongodbdemocrud.model.Student;
 import com.aspire.mongodbdemocrud.service.StudentService;
 
@@ -73,6 +74,8 @@ public class StudentController {
 	public ResponseEntity<?> saveStudent(@RequestBody @Valid Student student){
 		try {
 			return new ResponseEntity<Student>(studentService.saveStudent(student), HttpStatus.CREATED);
+		}catch(InvalidDateException exception) {
+			return new ResponseEntity<String>(exception.getMessage(), HttpStatus.BAD_REQUEST);
 		}catch(Exception exception) {
 			return new ResponseEntity<String>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
