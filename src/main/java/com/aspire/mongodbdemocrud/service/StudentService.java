@@ -59,10 +59,9 @@ public class StudentService {
 	 * @throws IllegalArgumentException when the id is not specified.
 	 */
 	public void deleteStudentById(String studentId) {
-		Optional<Student> student = studentRepository.findById(studentId);
-		student.orElseThrow(() -> new NoSuchElementException("Student doesn't exist."));
-		
 		try {
+			Optional<Student> student = studentRepository.findById(studentId);
+			student.orElseThrow(() -> new NoSuchElementException("Student doesn't exist."));
 			studentRepository.deleteById(studentId);
 		}catch (IllegalArgumentException exception) {
 			throw new IllegalArgumentException("ID must not be null.");
@@ -77,12 +76,25 @@ public class StudentService {
 	 * @throws InvalidDateException when an invalid date was introduced
 	 */
 	public Student saveStudent(Student student) throws InvalidDateException{
-		try {
-			dateValidator.validateDate(student.getDateOfJoin());
-			return studentRepository.insert(student);
-		} catch (InvalidDateException exception) {
-			throw new InvalidDateException(exception.getMessage());
-		}
+		dateValidator.validateDate(student.getDateOfJoin());
+		return studentRepository.insert(student);
 	}
 	
+	/**
+	 * This method updates a student already stored in the collection.
+	 * @param student to be updated
+	 * @return the student updated
+	 * @throws InvalidDateException when an invalid date was introduced
+	 * @throws IllegalArgumentException when the student (argument) is null
+	 */
+	public Student updateStudent(Student student) throws InvalidDateException {
+		try {
+			dateValidator.validateDate(student.getDateOfJoin());
+			return studentRepository.save(student);
+		}catch(InvalidDateException exception) {
+			throw new InvalidDateException(exception.getMessage());
+		}catch(IllegalArgumentException exception) {
+			throw new IllegalArgumentException("Student to update cannot be null");
+		}
+	}
 }

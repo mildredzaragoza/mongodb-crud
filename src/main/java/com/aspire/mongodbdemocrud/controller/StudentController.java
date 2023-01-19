@@ -31,8 +31,6 @@ import com.aspire.mongodbdemocrud.service.StudentService;
 @RestController
 @RequestMapping("/students")
 public class StudentController {
-	
-	// Logger logger = Logger.getLogger(StudentController.class);
 
 	@Autowired
 	private StudentService studentService;
@@ -102,7 +100,11 @@ public class StudentController {
 	@PutMapping
 	public ResponseEntity<?> updateStudent(@RequestBody Student student){
 		try {
-			return new ResponseEntity<Student>(studentService.saveStudent(student), HttpStatus.CREATED);
+			return new ResponseEntity<Student>(studentService.updateStudent(student), HttpStatus.OK);
+		}catch(InvalidDateException exception) {
+			return new ResponseEntity<String>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+		}catch(IllegalArgumentException exception) {
+			return new ResponseEntity<String>(exception.getMessage(), HttpStatus.BAD_REQUEST);
 		}catch(Exception exception) {
 			return new ResponseEntity<String>(exception.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}

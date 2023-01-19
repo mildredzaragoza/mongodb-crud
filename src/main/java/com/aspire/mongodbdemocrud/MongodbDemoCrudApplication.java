@@ -1,6 +1,7 @@
 package com.aspire.mongodbdemocrud;
 
-import java.util.Date;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * REST API with MongoDB
  * @author Mildred Zaragoza
  * Created at: 01/04/2023
- * Updated at: 01/17/2023
+ * Updated at: 01/19/2023
  * Reviewed by Suresh Rajendran
  * Reviewed at: 01/16/2023
  */
@@ -17,10 +18,19 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MongodbDemoCrudApplication {
 	
+	private static final Logger logger = LogManager.getLogger(MongodbDemoCrudApplication.class);
+	
 	public static void main(String[] args) {
-		    	Date newDate = new Date("22-JAN-2022");
-		    	System.out.println("The date is " + newDate);
-		    
+		 
+		/**
+		 * Testing logger
+		 */
+		logger.debug("Debugging log");
+	    logger.info("Info log");
+	    logger.warn("Hey, This is a warning!");
+	    logger.error("Oops! We have an Error. OK");
+	    logger.fatal("Damn! Fatal error. Please fix me.");
+	    
 		SpringApplication.run(MongodbDemoCrudApplication.class, args);
 	}
 
